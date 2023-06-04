@@ -25,8 +25,8 @@ router.post('/signin', celebrate({
 
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);
-router.use('*', () => {
-  throw new NotFoundError(NOT_FOUND.message);
+router.use('*', (req, res, next) => {
+  next(new NotFoundError(NOT_FOUND.message));
 });
 
 module.exports = router;

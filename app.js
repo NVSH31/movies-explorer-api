@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
 const { requesLogger, errorLogger } = require('./middlewares/logger');
@@ -20,8 +19,8 @@ const {
 
 mongoose.connect(NODE_ENV === 'production' ? BASE_PATH : BASE_PATH_DEV);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(corsMW);
 
@@ -42,7 +41,11 @@ app.use((err, req, res, next) => {
     statusCode = UNIQUE_FIELD.code;
     message = UNIQUE_FIELD.message;
   } else {
-    statusCode = err.statusCode || err.code || 500;
+    // statusCode = err.statusCode || err.code || 500;
+    statusCode = err.statusCode || err.code;
+
+    // console.log('err.statusCode =', err.statusCode);
+
     message = err.message;
   }
   res

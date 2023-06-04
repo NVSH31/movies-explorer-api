@@ -12,11 +12,11 @@ const { auth } = require('../middlewares/auth');
 
 router.get('/me', auth, getMe);
 
-router.patch('/me', celebrate({
+router.patch('/me', auth, celebrate({
   body: Joi.object().keys({
     name: validateName,
     email: validateEmail,
   }),
-}), auth, updateMe);
+}), updateMe);
 
 module.exports = router;

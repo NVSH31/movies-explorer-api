@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcryptjs');
-const BadRequestError = require('../errors/bad-request-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
-const { UNAUTHORIZED, BAD_REQUEST } = require('../utils/statuses');
+const { UNAUTHORIZED } = require('../utils/statuses');
 const {
   FIELD_REQUIRE, FIELD_EMAIL,
-  FIELD_MIN_2, FIELD_MIN_6, FIELD_MAX_30,
+  FIELD_MIN_2, FIELD_MAX_30,
 } = require('../utils/const');
 
 const userSchema = new mongoose.Schema({
@@ -19,7 +18,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, FIELD_REQUIRE],
-    minlength: [6, FIELD_MIN_6],
     select: false,
   },
   name: {
@@ -40,7 +38,7 @@ userSchema.statics.findUserByCredentials = function (email, password, next) {
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new BadRequestError(BAD_REQUEST.message);
+            throw new UnauthorizedError(UNAUTHORIZED.message);
           }
           return user;
         });

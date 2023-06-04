@@ -16,6 +16,7 @@ module.exports.createMovie = (req, res, next) => {
     country, director, duration, year, description, image,
     trailerLink, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
+  // console.log('movieId =', parseInt(movieId, 16), ' type =', typeof(parseInt(movieId, 16)));
   Movie.create({
     country,
     director,
@@ -43,7 +44,7 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() !== req.user._id) {
         throw new ForbiddenError(FORBIDDEN.message);
       }
-      Movie.findByIdAndRemove(req.params.movieId)
+      movie.deleteOne()
         .then(() => res.status(NO_CONTENT.code)
           .send({ message: NO_CONTENT.message }))
         .catch(next);

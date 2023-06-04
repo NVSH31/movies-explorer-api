@@ -12,7 +12,7 @@ const { auth } = require('../middlewares/auth');
 
 router.get('/', auth, getMovies);
 
-router.post('/', celebrate({
+router.post('/', auth, celebrate({
   body: Joi.object().keys({
     country: validateMovieStr,
     director: validateMovieStr,
@@ -26,12 +26,12 @@ router.post('/', celebrate({
     thumbnail: validateMovieLink,
     movieId: validateMovieId,
   }),
-}), auth, createMovie);
+}), createMovie);
 
-router.delete('/:movieId', celebrate({
+router.delete('/:movieId', auth, celebrate({
   params: Joi.object().keys({
     movieId: validateMovieId,
   }),
-}), auth, deleteMovie);
+}), deleteMovie);
 
 module.exports = router;
