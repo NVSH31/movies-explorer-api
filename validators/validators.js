@@ -7,7 +7,8 @@ const validatePassword = Joi.string().required().min(6);
 
 const validateMovieStr = Joi.string().required();
 const validateMovieDur = Joi.number().integer().min(0).required();
-const validateMovieId = Joi.string().required().hex().length(24);
+const validateMovieId = Joi.number().integer().min(0).required();
+
 const validateMovieLink = Joi.string().required().regex(url).min(2);
 
 module.exports = {
