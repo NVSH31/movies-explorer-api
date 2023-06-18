@@ -4,6 +4,7 @@ const router = require('express').Router();
 const {
   validateMovieStr, validateMovieDur,
   validateMovieId, validateMovieLink,
+  validateId,
 } = require('../validators/validators');
 const {
   getMovies, createMovie, deleteMovie,
@@ -30,7 +31,8 @@ router.post('/', auth, celebrate({
 
 router.delete('/:movieId', auth, celebrate({
   params: Joi.object().keys({
-    movieId: validateMovieId,
+    // movieId: validateMovieId,
+    movieId: validateId,
   }),
 }), deleteMovie);
 
